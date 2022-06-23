@@ -10,50 +10,39 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/e06fe9305c.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/vader/jquery-ui.css">
 
 </head>
 
 <body style="padding-bottom:30px; padding: 10px; text-align: center; padding-top: 15px;">
 
     <div style="display: flex; gap: 8px;">
-        <div class="dropdown" id="dropdown" style="margin-right: 2%;">
-            <div class="dropdown-trigger">
-              <button class="button is-danger" aria-haspopup="true" aria-controls="dropdown-menu4">
-                <span id="sorttext">Hot</span>
-                <span class="icon is-small">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item" id="hot">
-                    <p class="has-text-left has-text-black is-size-6">Hot</p>
-                </div>
-                <div class="dropdown-item" id="top">
-                    <p class="has-text-left has-text-black is-size-6">Top</p>
-                </div>
-                <div class="dropdown-item" id="random">
-                    <p class="has-text-left has-text-black is-size-6">Random</p>
-                  </div>
-              </div>
-            </div>
-          </div>
           <div>
             <p class="control has-icons-left has-icons-right" style="display: inline;">
             <input class="input" type="text" onkeydown="if (event.keyCode == 13)
-            document.getElementById('btnSearch').click()" placeholder="Tags" id="tag" style=" display: inline; padding-right: 10px;">
+            kereses();" placeholder="Tags" id="input" style=" display: inline; padding-right: 10px;">
             <span class="icon is-small is-left">
                 <i class="fas fa-search"></i>
             </span>
             </p>
         </div>
-        <button id="btnSearch" class="button is-info"style="margin-left: 2%; margin-bottom: 13px;" onclick="kereses();">Search</button>
+        
+    <div class="control pt-0">
+        <label class="radio">
+        <input type="radio" name="answer" id="nsfw">
+        <p class="is-size-5 has-text-white">NSFW</p>
+        </label>
+        <label class="radio">
+        <input type="radio" name="answer">
+        <p class="is-size-5 has-text-white">SFW</p>
+        </label>
+    </div>
     </div>
     <p class="has-text-white is-size-4 has-text-centered has-text-weight-semibold" hidden id="waittext">Loading...</p>
     <p class="has-text-white is-size-5 has-text-centered mb-2 has-text-weight-semibold" hidden id="resulttext">Results: </p>
     <section class="valami">
-        <div class="row" style="overflow:auto;"> 
+        <div id="row" class="row" style="overflow:auto;"> 
             <div class="columnx" id="column1">
 
             </div>
@@ -64,5 +53,4 @@
     </section>
     <script src="javascript.js"></script>
 </body>
-
 </html>

@@ -1,75 +1,57 @@
 let col1H = 0;
 let col2H = 0;
-let i = 0;
+ii = 0;
 let kepernyo = (window.innerWidth / 2) - 14;
 var lehet = 1;
+var leen = 0;
+
+let nsfw;
 
 var links = [];
 var height = [];
 var width = [];
-var rating = [];
-
-if (localStorage.getItem("kereses") != null && localStorage.getItem("kereses") != "") {
-    kereses();
-    document.getElementById('tag').value = localStorage.getItem("kereses");
-}
-
-if(localStorage.getItem("sort") != null){
-    document.getElementById('sorttext').textContent = localStorage.getItem("sort");
-    if (localStorage.getItem("sort") == 'top'){
-        document.getElementById('sorttext').textContent = 'Top';
-    }
-    else if (localStorage.getItem("sort") == 'hot'){
-        document.getElementById('sorttext').textContent = 'Hot';
-    }
-    else{
-        document.getElementById('sorttext').textContent = 'Rnd';
-    }
-}
 
 //leszedi az adatokat, link, height, width
 function kereses() {
-    if (links.length > 0) {
-        location.reload(true);
+
+    if(document.getElementById('nsfw').checked){
+        nsfw = 1;
+    }
+    else {
+        nsfw = 0;
     }
 
-    if (document.getElementById('tag').value != null && document.getElementById('tag').value != "" && document.getElementById('tag').value != undefined) {
-        localStorage.setItem("kereses", $('#tag').val());
-    }
+    console.log(nsfw);
 
-    var keres = localStorage.getItem("kereses");
+    document.getElementById('column1').remove();
+    document.getElementById('column2').remove();
+    let row = document.getElementById('row');
 
-    for (let i = 1; i < 11; i++) {
-        if(localStorage.getItem("sort") == "hot" || localStorage.getItem('sort') == null || localStorage.getItem('sort') == undefined){
-            mainurl = "https://danbooru.donmai.us/posts.json?api_key=vqPYSST4GR1QtKwQdheqiuo8&login=Semnot&limit=200&json=1&tags=" + keres + "&page=" + i + "";   
-        }
-        else if (localStorage.getItem("sort") == "top"){
-            mainurl = "https://danbooru.donmai.us/posts.json?api_key=vqPYSST4GR1QtKwQdheqiuo8&login=Semnot&limit=200&json=1&tags=" + keres + "%20order:upvotes&page=" + i + ""; 
-        } else{
-            mainurl = "https://danbooru.donmai.us/posts.json?api_key=vqPYSST4GR1QtKwQdheqiuo8&login=Semnot&limit=200&json=1&tags=" + keres + "&page=" + i + ""; 
-        }
+    let column1 = document.createElement('div');
+    column1.setAttribute('id', 'column1');
+    column1.setAttribute('class', 'columnx');
 
-        fetch(mainurl)
-            .then(response => response.json())
-            .then(data => {
-                for (let index = 0; index < data.length; index++) {
-                    if(data[index]['rating'] == "s"){
-                        if (links.includes(data[index]['file_url']) == false && data[index]['up_score'] >= 15 && data[index]['file_url'] != "undefined" && data[index]['file_size'] < 2000000 && String(data[index]['file_url']).search(".jpg") >= 0 || String(data[index]['file_url']).search(".png") >= 0) {
-                            links.push(data[index]['file_url'])
-                            height.push(data[index]['image_height'])
-                            width.push(data[index]['image_width'])
-                        }
-                    }
-                }
-        })
-    }
+    let column2  = document.createElement('div');
+    column2.setAttribute('id', 'column2');
+    column2.setAttribute('class', 'columnx');
 
-    setTimeout(() => {
-        for (let j = 0; j < 4; j++) {
-            delay(); 
-        }
-    }, 3000);
+    row.appendChild(column1);
+    row.appendChild(column2);
+
+    leen = 0;
+    ii = 0;
+    links = [];
+    height = [];
+    width = [];
+
     document.getElementById('waittext').removeAttribute('hidden');
+
+
+    linkekLekerese();
+    setTimeout(() => {
+        elsoLefutas();
+    }, 2500);
+
 }
 
 //delaying
@@ -94,86 +76,16 @@ function sok() {
 }
 
 function generate() {
-    if (i == 0) {
-        var leen = links.length;
-
-        //kitorli az egymas utani ugyanolyan nagysagu kepeket
-        for (let mn = 0; mn < leen; mn++) {
-            if (height[mn] == height[mn+1] && width[mn] == width[mn+1]) {
-                    height.splice(mn, 1);
-                    width.splice(mn, 1);
-                    links.splice(mn, 1);
-                }
-        }
-        
-        //randomizalja a kepeket
-        if(localStorage.getItem("sort") != "top"){
-            setTimeout(() =>{
-                var hx = 0,
-                    len = links.length,
-                    next, order = [];
-                while (hx < len) order[hx] = ++hx; //[1,2,3...]
-                order.sort(function() {
-                    return Math.random() - .5
-                });
-      
-                for (hx = 0; hx < len; hx++) {
-                    next = order[hx];
-                    links.push(links[next]);
-                    height.push(height[next]);
-                    width.push(width[next]);
-                }
-                links.splice(1, len);
-                height.splice(1, len);
-                width.splice(1, len);
-              }, 500);
-        }
-
-        setTimeout(() => {
-          let url = links[i];
-          if (url != undefined) {
-              var image = new Image();
-              image.src = url;
-              image.style = "width: 100%;";
-
-              if (col1H >= col2H) {
-                  document.getElementById('column2').appendChild(image);
-                  col2H += height[i] * (kepernyo / width[i]);
-
-              } else {
-                  document.getElementById('column1').appendChild(image);
-                  col1H += height[i] * (kepernyo / width[i]);
-              }
-          }
-          i++;
-          document.getElementById('resulttext').removeAttribute('hidden');
-          document.getElementById('resulttext').textContent = 'Results: ' + links.length;
-          document.getElementById('waittext').setAttribute('hidden', '');
-        }, 2000);
+    if (ii == 0) {
+        executeAsynchronously([duplikaltakTorlese(), kepekRandomizalasa(), kepBeszurasa()], 10);
     }
     else {
-      let url = links[i];
-    
-      if (url != undefined) {
-          var image = new Image();
-          image.src = url;
-          image.style = "width: 100%;";
-
-          if (col1H >= col2H) {
-              document.getElementById('column2').appendChild(image);
-              col2H += height[i] * (kepernyo / width[i]);
-
-          } else {
-              document.getElementById('column1').appendChild(image);
-              col1H += height[i] * (kepernyo / width[i]);
-          }
-      }
-      i++;
+        kepBeszurasa();
     }
 }
 
-//folyamatosan adja a kepeket ahogy a felhasznalo gorget lefele
-window.addEventListener("scroll", function(){ // or window.addEventListener("scroll"....
+// folyamatosan adja a kepeket ahogy a felhasznalo gorget lefele
+window.addEventListener("scroll", function(){
    if($(window).scrollTop() >= $(document).height() - $(window).height() - 150){
      if(lehet == 1){
       delay();
@@ -181,35 +93,113 @@ window.addEventListener("scroll", function(){ // or window.addEventListener("scr
    }
 }, false);
 
-document.getElementById('dropdown').addEventListener("click", dropsort);
+function kepBeszurasa(){
+    let url = links[ii];
+    
+    if (url != undefined) {
+        var image = new Image();
+        image.src = url;
+        image.style = "width: 100%;";
 
-function dropsort(){
-    let drop = document.getElementById('dropdown');
-    if(drop.classList.contains('is-active')){
-        drop.classList.remove('is-active');
-    } else {
-        drop.classList.add('is-active');
+        if (col1H >= col2H) {
+            document.getElementById('column2').appendChild(image);
+            col2H += height[ii] * (kepernyo / width[ii]);
+
+        } else {
+            document.getElementById('column1').appendChild(image);
+            col1H += height[ii] * (kepernyo / width[ii]);
+        }
+    }
+    ii++;
+}
+
+function kepekRandomizalasa(){
+    var hx = 0,
+        len = links.length,
+        next, order = [];
+    while (hx < len) order[hx] = ++hx; //[1,2,3...]
+    order.sort(function() {
+        return Math.random() - .5
+    });
+
+    for (hx = 0; hx < len; hx++) {
+        next = order[hx];
+        links.push(links[next]);
+        height.push(height[next]);
+        width.push(width[next]);
+    }
+    links.splice(1, len);
+    height.splice(1, len);
+    width.splice(1, len);
+}
+
+function duplikaltakTorlese(){
+    document.getElementById('waittext').setAttribute('hidden', '');
+    for (let mn = 0; mn < leen; mn++) {
+        if (height[mn] == height[mn+1] && width[mn] == width[mn+1]) {
+                height.splice(mn, 1);
+                width.splice(mn, 1);
+                links.splice(mn, 1);
+        }
     }
 }
 
-document.getElementById('top').addEventListener("click", dropsortTop);
-document.getElementById('hot').addEventListener("click", dropsortHot);
-document.getElementById('random').addEventListener("click", dropsortRandom);
-
-function dropsortTop(){
-    //let topx = document.getElementById('top');
-    document.getElementById('sorttext').textContent = 'Top';
-    localStorage.setItem("sort", 'top');
+function executeAsynchronously(functions, timeout) {
+    for(var i = 0; i < functions.length; i++) {
+      setTimeout(functions[i], timeout);
+    }
 }
 
-function dropsortHot(){
-    //let hotx = document.getElementById('hot');
-    document.getElementById('sorttext').textContent = 'Hot';
-    localStorage.setItem("sort", 'hot');
+function linkekLekerese(){
+    let kereses = document.getElementById('input').value;
+    for (let i = 1; i < 11; i++) {
+        mainurl = "https://danbooru.donmai.us/posts.json?api_key=vqPYSST4GR1QtKwQdheqiuo8&login=Semnot&limit=200&json=1&tags=" + kereses + "&page=" + i + "";   
+        fetch(mainurl)
+            .then(response => response.json())
+            .then(data => {
+                for (let index = 0; index < data.length; index++) {
+                    if(nsfw == 1){
+                        if(data[index]['rating'] != "s"){
+                            if (links.includes(data[index]['file_url']) == false && data[index]['up_score'] >= 15 && data[index]['file_url'] != "undefined" && data[index]['file_size'] < 2000000 && String(data[index]['file_url']).search(".jpg") >= 0 || String(data[index]['file_url']).search(".png") >= 0) {
+                                links.push(data[index]['file_url']);
+                                height.push(data[index]['image_height']);
+                                width.push(data[index]['image_width']);
+                                leen++;
+                            }
+                        }
+                    } else{
+                        if(data[index]['rating'] == "s"){
+                            if (links.includes(data[index]['file_url']) == false && data[index]['up_score'] >= 15 && data[index]['file_url'] != "undefined" && data[index]['file_size'] < 2000000 && String(data[index]['file_url']).search(".jpg") >= 0 || String(data[index]['file_url']).search(".png") >= 0) {
+                                links.push(data[index]['file_url']);
+                                height.push(data[index]['image_height']);
+                                width.push(data[index]['image_width']);
+                                leen++;
+                            }
+                        }
+                    }
+
+                    console.log(nsfw);
+                }
+        })
+    }
 }
 
-function dropsortRandom(){
-    //let randomx = document.getElementById('random');
-    document.getElementById('sorttext').textContent = 'Rnd';
-    localStorage.setItem("sort", 'random');
+function elsoLefutas(){
+        for (let j = 0; j < 4; j++) {
+            delay(); 
+        }
 }
+
+$.ajax({
+    url: "tags.txt",
+    dataType: "text",
+    success: function(data) {
+        var autoCompleteData = data.split('\n');
+        $("#input").autocomplete({
+            source: function(request, response) {
+                var results = $.ui.autocomplete.filter(autoCompleteData, request.term);
+                response(results.slice(0, 5)); // Display the first 10 results
+            }
+        });
+    }
+});
