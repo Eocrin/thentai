@@ -14,14 +14,12 @@ var width = [];
 //leszedi az adatokat, link, height, width
 function kereses() {
 
-    if(document.getElementById('nsfw').checked){
+    if(!document.getElementsByTagName('input')[0].checked){
         nsfw = 1;
     }
     else {
         nsfw = 0;
     }
-
-    console.log(nsfw);
 
     document.getElementById('column1').remove();
     document.getElementById('column2').remove();
@@ -177,8 +175,6 @@ function linkekLekerese(){
                             }
                         }
                     }
-
-                    console.log(nsfw);
                 }
         })
     }

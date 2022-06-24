@@ -10,39 +10,45 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/e06fe9305c.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/vader/jquery-ui.css">
-
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"
+        integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="autocomplete.css">
+    <link rel="stylesheet" href="flipbutton.css">
 </head>
 
-<body style="padding-bottom:30px; padding: 10px; text-align: center; padding-top: 15px;">
+<body style="padding-bottom:30px; padding: 10px; padding-top: 15px;">
 
-    <div style="display: flex; gap: 8px;">
-          <div>
-            <p class="control has-icons-left has-icons-right" style="display: inline;">
-            <input class="input" type="text" onkeydown="if (event.keyCode == 13)
-            kereses();" placeholder="Tags" id="input" style=" display: inline; padding-right: 10px;">
-            <span class="icon is-small is-left">
-                <i class="fas fa-search"></i>
-            </span>
-            </p>
-        </div>
-        
-    <div class="control pt-0">
-        <label class="radio">
-        <input type="radio" name="answer" id="nsfw">
-        <p class="is-size-5 has-text-white">NSFW</p>
-        </label>
-        <label class="radio">
-        <input type="radio" name="answer">
-        <p class="is-size-5 has-text-white">SFW</p>
-        </label>
-    </div>
+
+            <div style="padding-left: 10px; padding-top: 5px;">
+                <input name="nsfw" class="tgl tgl-flip" id="cb5" type="checkbox"/>
+                <label class="tgl-btn" data-tg-off="NSFW" data-tg-on="SFW" for="cb5" style="font-size: 18px;"></label>
+            </div>
+
+            <div style="display:flex ; align-items: center; justify-content: center;" class="mt-5 mb-5">
+                <div class=" field has-addons">
+                    <p class="control has-icons-left has-icons-right" style="display: inline;">
+                        <input class="input" type="text" onkeydown="if (event.keyCode == 13) kereses();" placeholder="Tags"
+                            id="input" style=" display: inline; padding-right: 10px;">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </p>
+                    <div class="control ">
+                        <a class="button is-danger" onclick="kereses();">
+                            <div class="icon">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
     </div>
     <p class="has-text-white is-size-4 has-text-centered has-text-weight-semibold" hidden id="waittext">Loading...</p>
-    <p class="has-text-white is-size-5 has-text-centered mb-2 has-text-weight-semibold" hidden id="resulttext">Results: </p>
+    <p class="has-text-white is-size-5 has-text-centered mb-2 has-text-weight-semibold" hidden id="resulttext">Results:
+    </p>
     <section class="valami">
-        <div id="row" class="row" style="overflow:auto;"> 
+        <div id="row" class="row" style="overflow:auto;">
             <div class="columnx" id="column1">
 
             </div>
@@ -53,4 +59,5 @@
     </section>
     <script src="javascript.js"></script>
 </body>
+
 </html>

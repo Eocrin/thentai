@@ -54,7 +54,10 @@ body {
 }
 }
 
-.dropdown-item:hover {
-  background-color: #f5f5f5;
-  cursor: pointer;
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ui-helper-hidden-accessible{
+  display: none;
 }
